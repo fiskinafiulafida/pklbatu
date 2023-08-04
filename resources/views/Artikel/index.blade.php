@@ -1,6 +1,6 @@
 @extends('Layout.main')
 
-@section('title', 'Berita')
+@section('title', 'Artikel - Admin')
 
 @section('container')
 <!-- Page Heading -->
@@ -15,7 +15,7 @@
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <div>
-                    <a href="{{ route('berita.create') }}" class="btn btn-primary"> <i class="fa fa-plus" aria-hidden="true"></i> Tambah Data</button></a>
+                    <a href="{{ route('artikel.create') }}" class="btn btn-primary"> <i class="fa fa-plus" aria-hidden="true"></i> Tambah Data</button></a>
                 </div>
                 <br>
                 <thead>
@@ -38,25 +38,6 @@
                         <th>Action</th>
                     </tr>
                 </tfoot>
-                <tbody>
-                    @forelse ($berita as $berita)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $berita->judul_berita }}</td>
-                        <td>{{ $berita->isi_berita }}</td>
-                        <td>{{ $berita->created_at }}</td>
-                        <td>{{ $berita->gambar_berita }}</td>
-                        <td class="text-center">
-                            <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('berita.destroy', $berita->id) }}" method="POST">
-                                <a href="{{ route('berita.edit', $berita->id) }}" class="btn success fas fa-edit"></a>
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn"><i class="fa fa-trash"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
             </table>
         </div>
     </div>
