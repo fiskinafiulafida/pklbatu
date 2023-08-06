@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Berita;
 
+use Illuminate\Support\Facades\Storage;
+
 class BeritaController extends Controller
 {
     /**
@@ -37,7 +39,29 @@ class BeritaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'judul_berita'      => 'required',
+            'isi_berita'   => 'required',
+            'gambar_berita'      => 'required|image|mimes:png,jpg,jpeg',
+        ]);
+
+        //upload image
+        $gambar_berita = $request->file('gambar_berita');
+        $gambar_berita->storeAs('public/image', $gambar_berita->hashName());
+
+        $berita = Berita::create([
+            'judul_berita'      => $request->judul_berita,
+            'isi_berita'   => $request->isi_berita,
+            'gambar_berita'     => $gambar_berita->hashName(),
+        ]);
+
+        if ($berita) {
+            //redirect dengan pesan sukses
+            return redirect()->route('berita.index')->with(['success' => 'Data Berhasil Disimpan!']);
+        } else {
+            //redirect dengan pesan error
+            return redirect()->route('berita.index')->with(['error' => 'Data Gagal Disimpan!']);
+        }
     }
 
     /**
@@ -69,9 +93,45 @@ class BeritaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Berita $berita)
     {
-        //
+        $this->validate($request, [
+            'judul_berita'      => 'required',
+            'isi_berita'        => 'required',
+        ]);
+
+        //get data Berita by ID
+        $berita = Berita::findOrFail($berita->id);
+
+        if ($request->file('gambar_berita') == "") {
+
+            $berita->update([
+                'judul_berita'      => $request->judul_berita,
+                'isi_berita'   => $request->isi_berita,
+            ]);
+        } else {
+
+            //hapus old image
+            Storage::disk('local')->delete('public/image/' . $berita->isi_berita);
+
+            //upload new image
+            $gambar_berita = $request->file('isi_berita');
+            $gambar_berita->storeAs('public/image', $gambar_berita->hashName());
+
+            $berita->update([
+                'gambar_berita'     => $gambar_berita->hashName(),
+                'judul_berita'      => $request->judul_berita,
+                'isi_berita'     => $request->isi_berita,
+            ]);
+        }
+
+        if ($berita) {
+            //redirect dengan pesan sukses
+            return redirect()->route('berita.index')->with(['success' => 'Data Berhasil Diupdate!']);
+        } else {
+            //redirect dengan pesan error
+            return redirect()->route('berita.index')->with(['error' => 'Data Gagal Diupdate!']);
+        }
     }
 
     /**
@@ -82,6 +142,16 @@ class BeritaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $berita = Berita::findOrFail($id);
+        Storage::disk('local')->delete('public/image/' . $berita->gambar_berita);
+        $berita->delete();
+
+        if ($berita) {
+            //redirect dengan pesan sukses
+            return redirect()->route('berita.index')->with(['success' => 'Data Berhasil Dihapus!']);
+        } else {
+            //redirect dengan pesan error
+            return redirect()->route('berita.index')->with(['error' => 'Data Gagal Dihapus!']);
+        }
     }
 }

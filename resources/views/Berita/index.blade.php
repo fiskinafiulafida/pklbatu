@@ -45,17 +45,23 @@
                         <td>{{ $berita->judul_berita }}</td>
                         <td>{{ $berita->isi_berita }}</td>
                         <td>{{ $berita->created_at }}</td>
-                        <td>{{ $berita->gambar_berita }}</td>
+                        <td class="text-center">
+                            <img src="{{ Storage::url('public/image/'.$berita->gambar_berita) }}" class="rounded" style="width: 100px">
+                        </td>
                         <td class="text-center">
                             <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('berita.destroy', $berita->id) }}" method="POST">
-                                <a href="{{ route('berita.edit', $berita->id) }}" class="btn success fas fa-edit"></a>
+                                <a href="{{ route('berita.edit', $berita->id) }}" class="btn btn-sm btn-primary">EDIT</a>
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn"><i class="fa fa-trash"></i></button>
+                                <button type="submit" class="btn btn-sm btn-danger">HAPUS</button>
                             </form>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <div class="alert alert-danger">
+                        Data Berita belum Tersedia.
+                    </div>
+                    @endforelse
                 </tbody>
             </table>
         </div>
