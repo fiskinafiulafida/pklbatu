@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\MonografiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,8 @@ Route::get('/', function () {
 });
 
 // berita
-Route::resource('berita', BeritaController::class);
+Route::resource('/berita', BeritaController::class);
 // artikel
-Route::resource('artikel', ArtikelController::class);
+Route::resource('/artikel', ArtikelController::class);
+// monografi hukum
+Route::resource('/monografi', MonografiController::class);

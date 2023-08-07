@@ -81,9 +81,9 @@ class BeritaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Berita $berita)
+    public function edit(Berita $beritum)
     {
-        return view('berita.edit', compact('berita'));
+        return view('berita.edit', compact('beritum'));
     }
 
     /**
@@ -93,7 +93,7 @@ class BeritaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Berita $berita)
+    public function update(Request $request, Berita $beritum)
     {
         $this->validate($request, [
             'judul_berita'      => 'required',
@@ -101,31 +101,31 @@ class BeritaController extends Controller
         ]);
 
         //get data Berita by ID
-        $berita = Berita::findOrFail($berita->id);
+        $beritum = Berita::findOrFail($beritum->id);
 
         if ($request->file('gambar_berita') == "") {
 
-            $berita->update([
+            $beritum->update([
                 'judul_berita'      => $request->judul_berita,
-                'isi_berita'   => $request->isi_berita,
+                'isi_berita'        => $request->isi_berita,
             ]);
         } else {
 
             //hapus old image
-            Storage::disk('local')->delete('public/image/' . $berita->isi_berita);
+            Storage::disk('local')->delete('public/image/' . $beritum->gambar_berita);
 
             //upload new image
-            $gambar_berita = $request->file('isi_berita');
+            $gambar_berita = $request->file('gambar_berita');
             $gambar_berita->storeAs('public/image', $gambar_berita->hashName());
 
-            $berita->update([
+            $beritum->update([
                 'gambar_berita'     => $gambar_berita->hashName(),
                 'judul_berita'      => $request->judul_berita,
-                'isi_berita'     => $request->isi_berita,
+                'nama_berita'       => $request->nama_berita,
             ]);
         }
 
-        if ($berita) {
+        if ($beritum) {
             //redirect dengan pesan sukses
             return redirect()->route('berita.index')->with(['success' => 'Data Berhasil Diupdate!']);
         } else {

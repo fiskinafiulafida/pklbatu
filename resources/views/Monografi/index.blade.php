@@ -1,6 +1,6 @@
-@extends('Layout.main')
+@extends('Layout/main')
 
-@section('title', 'Berita')
+@section('title', 'Monografi')
 
 @section('sedibar')
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -58,19 +58,19 @@
     </li>
     <!-- Nav Item - Berita -->
     <li class="nav-item">
-        <a class="nav-link" href="/berita">
+        <a class="nav-link" href="berita">
             <i class="fas fa-fw fa-newspaper"></i>
             <span>Berita</span></a>
     </li>
     <!-- Nav Item - Artikel -->
     <li class="nav-item">
-        <a class="nav-link" href="/artikel">
+        <a class="nav-link" href="artikel">
             <i class="fas fa-fw fa-book"></i>
             <span>Artikel</span></a>
     </li>
     <!-- Nav Item - Monografi Hukum< -->
     <li class="nav-item">
-        <a class="nav-link" href="/monografi">
+        <a class="nav-link" href="monografi">
             <i class="fas fa-fas fa-calendar"></i>
             <span>Monografi Hukum</span></a>
     </li>
@@ -88,18 +88,18 @@
 
 @section('container')
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">Data Tables Berita</h1>
+<h1 class="h3 mb-2 text-gray-800">Data Tables Monografi Hukum</h1>
 
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">DataTables Berita</h6>
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Monografi Hukum</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <div>
-                    <a href="{{ route('berita.create') }}" class="btn btn-primary"> <i class="fa fa-plus" aria-hidden="true"></i> Tambah Data</button></a>
+                    <a href="{{ route('monografi.create') }}" class="btn btn-primary"> <i class="fa fa-plus" aria-hidden="true"></i> Tambah Data</button></a>
                 </div>
                 <br>
                 <thead>
@@ -123,7 +123,7 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    @forelse ($berita as $berita)
+                    @forelse ($monografi as $monografi)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $berita->judul_berita }}</td>
